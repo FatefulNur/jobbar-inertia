@@ -34,6 +34,8 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'currentYear' => date('Y'),
+            'appName' => config('app.name', 'Jobbar'),
         ];
     }
 }
