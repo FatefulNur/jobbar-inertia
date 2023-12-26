@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\EmploymentType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreJobRequest;
 use App\Http\Requests\UpdateJobRequest;
+use App\Http\Resources\Admin\JobResource;
+use App\Http\Resources\EmploymentTypeResource;
 use App\Models\Job;
 
 class JobController extends Controller
@@ -16,7 +19,9 @@ class JobController extends Controller
     {
         $jobs = Job::latest()->get();
 
-        return view('admin.jobs.index', compact('jobs'));
+        return inertia()->render('Admin/Jobs/Index', [
+            'jobs' => JobResource::collection($jobs),
+        ]);
     }
 
     /**
@@ -24,7 +29,9 @@ class JobController extends Controller
      */
     public function create()
     {
-        return view('admin.jobs.create');
+        return inertia()->render('Admin/Jobs/Create', [
+            'employmentTypes' => EmploymentTypeResource::collection(EmploymentType::cases()),
+        ]);
     }
 
     /**
@@ -42,7 +49,9 @@ class JobController extends Controller
      */
     public function show(Job $job)
     {
-        return view('admin.jobs.show', compact('job'));
+        return inertia()->render('Admin/Jobs/Show', [
+            'job' => JobResource::make($job),
+        ]);
     }
 
     /**
@@ -50,7 +59,10 @@ class JobController extends Controller
      */
     public function edit(Job $job)
     {
-        return view('admin.jobs.edit', compact('job'));
+        return inertia()->render('Admin/Jobs/Edit', [
+            'job' => JobResource::make($job),
+            'employmentTypes' => EmploymentTypeResource::collection(EmploymentType::cases()),
+        ]);
     }
 
     /**
