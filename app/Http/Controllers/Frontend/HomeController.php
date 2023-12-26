@@ -18,6 +18,7 @@ class HomeController extends Controller
         return inertia()->render('Frontend/Index', [
             'jobs' => HomeJobResource::collection($jobs),
             'jobCount' => number_format($jobs->count()),
+            'searchQuery' => request('search'),
         ]);
     }
 }
